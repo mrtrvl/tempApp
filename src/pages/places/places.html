@@ -21,7 +21,7 @@
     </ion-fab>
     
   <ion-list lines>
-        <ion-item-sliding *ngFor="let place of dataProvider.places" (click)="editPlace(place)">
+        <ion-item-sliding *ngFor="let place of dataProvider.places" (click)="placeInfo(place)">
             <button ion-item>
                 {{ place.name }}
               </button>

@@ -19,7 +19,7 @@ export class EditPlacePage {
   place: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider, public alertCtrl: AlertController) {
-    this.place = { id: '', name: '', description: ''};
+    this.place = { id: '', name: '', description: '', sensors: [], relays: []};
   }
 
   ionViewDidLoad() {

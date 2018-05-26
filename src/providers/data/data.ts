@@ -14,7 +14,6 @@ export class DataProvider {
   places: any = [];
 
   constructor(public http: HttpClient, public storage: Storage) {
-    //console.log('Hello DataProvider Provider');
   }
 
   load() {

@@ -33,8 +33,13 @@ export class PlacesPage {
   }
 
   editPlace(place) {
-    console.log('Edit place');
     this.navCtrl.push('EditPlacePage', {
+      place: place
+    });
+  }
+
+  placeInfo(place) {
+    this.navCtrl.push('PlaceInfoPage', {
       place: place
     });
   }
