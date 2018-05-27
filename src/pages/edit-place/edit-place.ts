@@ -32,8 +32,7 @@ export class EditPlacePage {
   }
 
   save() {
-    console.log('Saving place');
-    this.dataProvider.save(this.place);
+    this.dataProvider.savePlace(this.place);
     this.navCtrl.pop();
   }
 

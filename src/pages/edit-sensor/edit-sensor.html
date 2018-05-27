@@ -7,12 +7,30 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>editSensor</ion-title>
-  </ion-navbar>
+    <ion-title>Anduri muutmine</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only (click)="confirmRemove()">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+    </ion-buttons>
+</ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+    <ion-list>
+        <ion-item>
+            ID: {{ sensor.id }}
+        </ion-item>
+        <ion-item>
+          <ion-label floating>Nimi</ion-label>
+          <ion-input [(ngModel)]="sensor.name" type="text"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>Kirjeldus</ion-label>
+            <ion-input [(ngModel)]="sensor.description" type="text"></ion-input>
+          </ion-item>
+      </ion-list>
+      <button ion-button (click)="save()">Salvesta</button>
 </ion-content>

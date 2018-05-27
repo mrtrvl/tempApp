@@ -14,5 +14,18 @@
 
 
 <ion-content padding>
-
+    <p>Andurid</p>
+    <ion-list lines>
+        <ion-item-sliding *ngFor="let sensor of sensors | async" (click)="sensorInfo(sensor)">
+            <button ion-item>
+                {{ sensor.name }}
+              </button>
+        <ion-item-options side="left"  icon-start (ionSwipe)="editSensor(sensor)">
+            <button ion-item color="primary" expandable (click)="editSensor(sensor)">
+              <ion-icon name="ios-create-outline"></ion-icon>
+                Muuda
+              </button>
+        </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

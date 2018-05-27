@@ -29,7 +29,7 @@ export class DataProvider {
     return this.places;
   }
 
-  save(place) {
+  savePlace(place) {
     if (place.id === '') {
 
       const newPlaceRef = this.placesRef.push({});
@@ -48,7 +48,7 @@ export class DataProvider {
     this.placesRef.remove(place.id);
   }
 
-  addSensor(sensor) {
+/*   addSensor(sensor) {
     const newSensorRef = this.sensorsRef.push({});
 
     newSensorRef.set({
@@ -57,11 +57,31 @@ export class DataProvider {
             description: sensor.description,
             placeId: sensor.placeId
       });
-  }
+  } */
 
   getSensorsOfPlaceById(placeId) {
     let sensors = this.afDatabase.list('/sensors', ref => ref.orderByChild('placeId').equalTo(placeId)).valueChanges();
+    return sensors;
+  }
+
+  saveSensor(sensor) {
+    this.sensorsRef.update(sensor.id, sensor);
+  }
+
+  getAllSensors() {
+    let sensors = this.afDatabase.list('/sensors').valueChanges();
     
     return sensors;
+  }
+
+  getTemperaturesFromSensorById(sensorId) {
+    let temperatures = this.afDatabase.list('/temperatures', ref => ref.orderByChild('sensorId').equalTo(sensorId)).valueChanges();
+    
+    return temperatures;
+  }
+
+  getLastTemperatureOfSensorById(sensorId) {
+
+    return sensorId;
   }
 }

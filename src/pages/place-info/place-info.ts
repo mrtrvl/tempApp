@@ -17,7 +17,6 @@ import { DataProvider } from '../../providers/data/data';
 export class PlaceInfoPage {
 
   place: any;
-  sensor: any;
   sensors: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
@@ -32,23 +31,18 @@ export class PlaceInfoPage {
     }
 
     this.sensors = this.dataProvider.getSensorsOfPlaceById(this.place.id);
-    console.log(`Sensors: ${ this.sensors }`);
   }
 
-  addSensor() {
-    this.dataProvider.addSensor({
-      name: this.place.name + 'Veetoru',
-      description: 'Magamistoa alune veetoru',
-      placeId: this.place.id
+  editSensor(sensor) {
+    this.navCtrl.push('EditSensorPage', {
+      sensor: sensor
     });
   }
 
-  editSensor() {
-    console.log('Edit sensor');
-  }
-
-  sensorInfo() {
-    console.log('Sensor info');
+  sensorInfo(sensor) {
+    this.navCtrl.push('TemperaturesPage', {
+      sensor: sensor
+    });
   }
 
   addRelay() {

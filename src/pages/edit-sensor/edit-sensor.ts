@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DataProvider } from '../../providers/data/data';
 
 /**
  * Generated class for the EditSensorPage page.
@@ -15,11 +16,22 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class EditSensorPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  sensor: any;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
+    this.sensor = {};
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad EditSensorPage');
+    let sensor = this.navParams.get('sensor');
+
+    if(typeof(sensor) !== 'undefined') {
+      this.sensor = sensor;
+    }
   }
 
+  save() {
+    this.dataProvider.saveSensor(this.sensor);
+    this.navCtrl.pop();
+  }
 }
