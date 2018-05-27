@@ -16,7 +16,7 @@
 <ion-content padding>
   <p>Andurid</p>
     <ion-list lines>
-        <ion-item-sliding *ngFor="let sensor of place.sensors" (click)="sensorInfo(sensor)">
+        <ion-item-sliding *ngFor="let sensor of sensors | async" (click)="sensorInfo(sensor)">
             <button ion-item>
                 {{ sensor.name }}
               </button>
@@ -32,7 +32,7 @@
       <ion-icon name="add"></ion-icon>
   </button>
   <p>Releed</p>
-  <ion-list lines>
+  <!-- <ion-list lines>
       <ion-item-sliding *ngFor="let relay of place.relays" (click)="relayInfo(relay)">
           <button ion-item>
               {{ relay.name }}
@@ -44,7 +44,7 @@
             </button>
       </ion-item-options>
   </ion-item-sliding>
-</ion-list>
+</ion-list> -->
 <button ion-fab icon-only color="light" (click)="addRelay()">
     <ion-icon name="add"></ion-icon>
 </button>

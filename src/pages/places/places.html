@@ -20,8 +20,8 @@
         </button>
     </ion-fab>
     
-  <ion-list lines>
-        <ion-item-sliding *ngFor="let place of dataProvider.places" (click)="placeInfo(place)">
+   <ion-list lines>
+        <ion-item-sliding *ngFor="let place of places | async" (click)="placeInfo(place)">
             <button ion-item>
                 {{ place.name }}
               </button>

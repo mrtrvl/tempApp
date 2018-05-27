@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Storage } from '@ionic/storage';
+import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { Observable } from 'rxjs';
 
 /*
   Generated class for the DataProvider provider.
@@ -11,48 +11,57 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class DataProvider {
 
-  places: any = [];
+  placesRef: AngularFireList<any>;
+  places: Observable<any[]>;
 
-  constructor(public http: HttpClient, public storage: Storage) {
+  sensorsRef: AngularFireList<any>;
+  sensors: any;
+  query: AngularFireList<any>;
+
+  constructor(public afDatabase: AngularFireDatabase) {
+    this.placesRef = afDatabase.list('/places');
+    this.places = this.placesRef.valueChanges();
+
+    this.sensorsRef = afDatabase.list('/sensors');
   }
 
   load() {
-    console.log('Loading data');
-    
-    return new Promise(resolve => {
-      if (this.places.length > 0) {
-        resolve(this.places);
-      } else {
-        this.storage.get('placeData').then((places) => {
-          if (places && typeof(places) !== 'undefined') {
-            this.places = places;
-          }
-
-          resolve(this.places);
-        })
-      }
-    });
+    return this.places;
   }
 
   save(place) {
-    let index = this.places.indexOf(place);
+    if (place.id === '') {
 
-    if (index === -1) {
-      this.places.push(place);
+      const newPlaceRef = this.placesRef.push({});
+
+      newPlaceRef.set({
+            id: newPlaceRef.key,
+            name: place.name,
+            description: place.description
+      });
     } else {
-      this.places[index] = place;
+        this.placesRef.update(place.id, place);
     }
-    console.log('Saving data');
-    this.storage.set('placeData', this.places);
   }
 
   removePlace(place) {
-    let index = this.places.indexOf(place);
+    this.placesRef.remove(place.id);
+  }
 
-    if (index !== -1) {
-      this.places.splice(index, 1);
-    }
+  addSensor(sensor) {
+    const newSensorRef = this.sensorsRef.push({});
 
-    this.storage.set('placeData', this.places);
+    newSensorRef.set({
+            id: newSensorRef.key,
+            name: sensor.name,
+            description: sensor.description,
+            placeId: sensor.placeId
+      });
+  }
+
+  getSensorsOfPlaceById(placeId) {
+    let sensors = this.afDatabase.list('/sensors', ref => ref.orderByChild('placeId').equalTo(placeId)).valueChanges();
+    
+    return sensors;
   }
 }

@@ -16,7 +16,7 @@ import { DataProvider } from '../../providers/data/data';
 })
 export class PlacesPage {
 
-  //places: any;
+  places: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
     
@@ -24,11 +24,10 @@ export class PlacesPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PlacesPage');
-    this.dataProvider.load();
+    this.places = this.dataProvider.load();
   }
 
   addPlace() {
-    console.log('Add place');
     this.navCtrl.push('EditPlacePage');
   }
 

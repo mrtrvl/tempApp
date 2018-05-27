@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DataProvider } from '../../providers/data/data';
 
 /**
  * Generated class for the PlaceInfoPage page.
@@ -16,9 +17,11 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 export class PlaceInfoPage {
 
   place: any;
+  sensor: any;
+  sensors: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.place = { id: '', name: '', description: ''};
+  constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
+    this.place = {id: '', name: '', description: ''};
   }
 
   ionViewDidLoad() {
@@ -28,11 +31,16 @@ export class PlaceInfoPage {
       this.place = place;
     }
 
-    console.log(this.place);
+    this.sensors = this.dataProvider.getSensorsOfPlaceById(this.place.id);
+    console.log(`Sensors: ${ this.sensors }`);
   }
 
   addSensor() {
-    console.log('Add sensor');
+    this.dataProvider.addSensor({
+      name: this.place.name + 'Veetoru',
+      description: 'Magamistoa alune veetoru',
+      placeId: this.place.id
+    });
   }
 
   editSensor() {

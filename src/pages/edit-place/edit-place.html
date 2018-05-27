@@ -7,7 +7,13 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Asukoha muutmine</ion-title>
+    <ion-title *ngIf="place.id != ''; else templateNewPlace">Asukoha muutmine</ion-title>
+    
+    <ng-template #templateNewPlace>
+      <ion-title>
+          Uue asukoha lisamine
+      </ion-title>
+    </ng-template>
 
     <ion-buttons end>
         <button ion-button icon-only (click)="confirmRemove()">
@@ -21,6 +27,9 @@
 
 <ion-content padding>
   <ion-list>
+    <ion-item *ngIf="place.id != ''">
+        ID: {{ place.id }}
+    </ion-item>
     <ion-item>
       <ion-label floating>Nimi</ion-label>
       <ion-input [(ngModel)]="place.name" type="text"></ion-input>
