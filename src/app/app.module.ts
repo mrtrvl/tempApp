@@ -15,6 +15,19 @@ import { DataProvider } from '../providers/data/data';
 import { HttpClientModule } from '@angular/common/http';
 import { IonicStorageModule } from '@ionic/storage';
 
+// Import the AF2 Module
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+
+// AF2 Settings
+export const firebaseConfig = {
+  apiKey: "AIzaSyBiZqo9Ac0mKqopImBtXgzWReSg013Qu7c",
+  authDomain: "tempapp-e401d.firebaseapp.com",
+  databaseURL: "https://tempapp-e401d.firebaseio.com",
+  storageBucket: "tempapp-e401d.appspot.com",
+  messagingSenderId: "34824108910"
+};
+
 @NgModule({
   declarations: [
     MyApp,
@@ -28,7 +41,9 @@ import { IonicStorageModule } from '@ionic/storage';
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireDatabaseModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
