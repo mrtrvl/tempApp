@@ -16,15 +16,28 @@ import { DataProvider } from '../../providers/data/data';
 })
 export class TemperaturesPage {
 
-  temperatures: any
+  temperatures: any;
+  place: any;
+  sensor: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
+    this.place = {};
+    this.sensor = {};
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad TemperaturesPage');
-    let sensor = this.navParams.get('sensor');
-    this.temperatures = this.dataProvider.getTemperaturesFromSensorById(sensor.id);
-  }
+    let place = this.navParams.get('place');
 
+    if(typeof(place) !== 'undefined') {
+      this.place = place;
+    }
+
+    let sensor = this.navParams.get('sensor');
+
+    if(typeof(sensor) !== 'undefined') {
+      this.sensor = sensor;
+    }
+
+    this.temperatures = this.dataProvider.getTemperaturesFromSensorById(this.sensor.id);
+  }
 }

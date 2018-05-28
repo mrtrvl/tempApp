@@ -81,7 +81,8 @@ export class DataProvider {
   }
 
   getLastTemperatureOfSensorById(sensorId) {
+    let temperature = 21;
 
-    return sensorId;
+    return temperature;
   }
 }

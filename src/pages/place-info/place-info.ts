@@ -41,7 +41,8 @@ export class PlaceInfoPage {
 
   sensorInfo(sensor) {
     this.navCtrl.push('TemperaturesPage', {
-      sensor: sensor
+      sensor: sensor,
+      place: this.place
     });
   }
 
