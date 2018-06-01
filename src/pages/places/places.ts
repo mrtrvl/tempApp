@@ -19,7 +19,7 @@ export class PlacesPage {
   places: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public dataProvider: DataProvider) {
-    
+
   }
 
   ionViewDidLoad() {

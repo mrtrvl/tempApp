@@ -13,18 +13,14 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DataProvider } from '../providers/data/data';
 
-// Import the AF2 Module
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule, AngularFireDatabase } from 'angularfire2/database';
 
-// AF2 Settings
-export const firebaseConfig = {
-  apiKey: "AIzaSyBiZqo9Ac0mKqopImBtXgzWReSg013Qu7c",
-  authDomain: "tempapp-e401d.firebaseapp.com",
-  databaseURL: "https://tempapp-e401d.firebaseio.com",
-  storageBucket: "tempapp-e401d.appspot.com",
-  messagingSenderId: "34824108910"
-};
+
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+
+import * as firebaseConfig from '../../options/secret.js';
 
 @NgModule({
   declarations: [
@@ -39,7 +35,9 @@ export const firebaseConfig = {
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    AngularFireAuthModule,
+    AngularFirestoreModule.enablePersistence()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

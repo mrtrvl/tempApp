@@ -30,7 +30,7 @@ export class PlaceInfoPage {
       this.place = place;
     }
 
-    this.sensors = this.dataProvider.getSensorsOfPlaceById(this.place.id);
+    this.sensors = this.dataProvider.getSensorsByPlaceId(this.place.id);
   }
 
   editSensor(sensor) {

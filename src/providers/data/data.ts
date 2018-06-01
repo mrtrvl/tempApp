@@ -1,6 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
-import { Observable } from 'rxjs';
+//import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
+import { Observable } from 'rxjs/Observable';
+import { AngularFireAuth } from 'angularfire2/auth';
+import 'rxjs/add/operator/map';
+
+interface Place {
+  id: string;
+  name: string;
+  description: string;
+  createdDate: Date;
+  deletedDate: Date;
+  modifiedDate: Date;
+  sensors: any;
+ }
 
 /*
   Generated class for the DataProvider provider.
@@ -11,41 +24,50 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class DataProvider {
 
-  placesRef: AngularFireList<any>;
-  places: Observable<any[]>;
+  placesCollection: AngularFirestoreCollection<Place>;
+  places: Observable<Place[]>
 
-  sensorsRef: AngularFireList<any>;
-  sensors: any;
-  query: AngularFireList<any>;
+/*   sensorsCollection: AngularFirestoreCollection<any>;
+  sensors: Observable<any[]>; */
 
-  constructor(public afDatabase: AngularFireDatabase) {
-    this.placesRef = afDatabase.list('/places');
-    this.places = this.placesRef.valueChanges();
-
-    this.sensorsRef = afDatabase.list('/sensors');
+   constructor(public afAuth: AngularFireAuth, private afs: AngularFirestore) {
+    this.afAuth.auth.signInAnonymously();
+    this.placesCollection = this.afs.collection('places', ref => ref.where('deletedDate', '==', null));
+    this.places = this.placesCollection.valueChanges();
   }
 
   load() {
     return this.places;
   }
 
-  savePlace(place) {
-    if (place.id === '') {
-
-      const newPlaceRef = this.placesRef.push({});
-
-      newPlaceRef.set({
-            id: newPlaceRef.key,
-            name: place.name,
-            description: place.description
-      });
+  async savePlace(place: Place) {
+    if(place.id === ''){
+      const newPlaceRef = this.placesCollection.add(place);
+      place.id = await newPlaceRef.then(result => result.id);
+      place.createdDate = new Date();
+      place.modifiedDate = new Date();
+      place.deletedDate = null;
     } else {
-        this.placesRef.update(place.id, place);
+      place.modifiedDate = new Date();
     }
+    this.placesCollection.doc(place.id).set(place, { merge: true })
+    .then(() => {
+        console.log("Document addded with id >>> ", place.id);
+    })
+    .catch((error) => {
+        console.error("Error adding document: ", error);
+    });
   }
 
-  removePlace(place) {
-    this.placesRef.remove(place.id);
+  removePlace(place: Place) {
+    place.deletedDate = new Date();
+    this.placesCollection.doc(place.id).set(place, { merge: true })
+    .then(() => {
+        console.log("Document removed with id >>> ", place.id);
+    })
+    .catch((error) => {
+        console.error("Error removing document: ", error);
+    });
   }
 
 /*   addSensor(sensor) {
@@ -59,24 +81,35 @@ export class DataProvider {
       });
   } */
 
-  getSensorsOfPlaceById(placeId) {
-    let sensors = this.afDatabase.list('/sensors', ref => ref.orderByChild('placeId').equalTo(placeId)).valueChanges();
+  getSensorsByPlaceId(placeId) {
+    const sensorsCollection = this.afs.collection('sensors', ref => ref.where('placeId', '==', placeId));
+    const sensors = sensorsCollection.valueChanges();
     return sensors;
   }
 
   saveSensor(sensor) {
-    this.sensorsRef.update(sensor.id, sensor);
+    const sensorsCollection = this.afs.collection('sensors');
+    sensor.modifiedDate = new Date();
+    sensorsCollection.doc(sensor.id).set(sensor, { merge: true })
+      .then(() => {
+          console.log("Document modified with id >>> ", sensor.id);
+      })
+      .catch((error) => {
+          console.error("Error modifing document: ", error);
+      });
   }
 
   getAllSensors() {
-    let sensors = this.afDatabase.list('/sensors').valueChanges();
-    
+    const sensorsCollection = this.afs.collection('sensors', ref => ref.where('deletedDate', '==', null));
+    const sensors = sensorsCollection.valueChanges();
+
     return sensors;
   }
 
-  getTemperaturesFromSensorById(sensorId) {
-    let temperatures = this.afDatabase.list('/temperatures', ref => ref.orderByChild('sensorId').equalTo(sensorId)).valueChanges();
-    
+  getTemperaturesBySensorId(sensorId) {
+    const temperaturesCollection = this.afs.collection('sensors/' + sensorId + '/temperatures', ref => ref.orderBy('createdDate', 'desc'));
+    const temperatures = temperaturesCollection.valueChanges();
+
     return temperatures;
   }
 

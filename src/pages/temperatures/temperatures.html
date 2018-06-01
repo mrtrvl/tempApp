@@ -16,7 +16,7 @@
 <ion-content padding>
     <ion-list lines>
       <ion-item *ngFor="let temperature of temperatures | async">
-        {{ temperature.temperature }}, {{ temperature.date }}
+        {{ temperature.temperature }}\xB0C, {{ temperature.createdDate }}
     </ion-item>
   </ion-list>
 </ion-content>

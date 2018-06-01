@@ -17,7 +17,7 @@
     <ion-list lines>
         <ion-item-sliding *ngFor="let sensor of sensors | async" (click)="sensorInfo(sensor)">
             <button ion-item>
-                {{ sensor.name }}
+                {{ sensor.name }}: {{ sensor.lastTemperature }}\xB0C
               </button>
         <ion-item-options side="left"  icon-start (ionSwipe)="editSensor(sensor)">
             <button ion-item color="primary" expandable (click)="editSensor(sensor)">

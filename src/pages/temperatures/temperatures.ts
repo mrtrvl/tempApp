@@ -38,6 +38,6 @@ export class TemperaturesPage {
       this.sensor = sensor;
     }
 
-    this.temperatures = this.dataProvider.getTemperaturesFromSensorById(this.sensor.id);
+    this.temperatures = this.dataProvider.getTemperaturesBySensorId(this.sensor.id);
   }
 }
